@@ -22,6 +22,9 @@ void ofApp::loadSettings(){
     //if the settings file doesn't exist we assigns default values (170, 190, 240)
     //red        = XML.getValue("BACKGROUND:COLOR:RED", 170);
     
+    //---------------- MODO --------------------
+    modo = XML.getValue("BGSUBTRACTION:USEBGSUBTRACTION", 0);
+    
     //---------------- OSC --------------------
     puerto = XML.getValue("OSC:PUERTO", 3333);
     host = XML.getValue("OSC:HOST", "127.0.0.1");
@@ -31,6 +34,10 @@ void ofApp::loadSettings(){
     
     //---------------- VIEW --------------------
     imageView = XML.getValue("VIEW:IMAGEVIEW", 0);
+    
+    //---------------- MODO --------------------
+    modo = XML.getValue("METODO:MODO", 0);
+    threshold = XML.getValue("CV:THRESHOLD", 127);
     
     //---------------- CAM --------------------
     deviceID = XML.getValue("CAM:DEVICEID", 0);
@@ -60,7 +67,6 @@ void ofApp::loadSettings(){
     adaptSpeed = XML.getValue("BGSUBTRACTION:ADAPTSPEED", 0.01);
     
     //---------------- CONTOUR FINDER --------------------
-    threshold = XML.getValue("CV:THRESHOLD", 127);
     minArea = XML.getValue("CV:MINAREA", 0.0);
     maxArea = XML.getValue("CV:MAXAREA", 1.0);
     persistence = XML.getValue("CV:PERSISTENCE", 15);
@@ -85,6 +91,10 @@ void ofApp::saveSettings(){
     
     //---------------- VIEW --------------------
     XML.setValue("VIEW:IMAGEVIEW", imageView);
+    
+    //---------------- MODO --------------------
+    XML.setValue("METODO:MODO", modo);
+    XML.setValue("CV:THRESHOLD", threshold);
     
     //---------------- CAM --------------------
     XML.setValue("CAM:DEVICEID", deviceID);
@@ -112,7 +122,6 @@ void ofApp::saveSettings(){
     XML.setValue("BGSUBTRACTION:ADAPTSPEED", adaptSpeed);
     
     //---------------- CONTOUR FINDER --------------------
-    XML.setValue("CV:THRESHOLD", threshold);
     XML.setValue("CV:MINAREA", minArea);
     XML.setValue("CV:MAXAREA", maxArea);
     XML.setValue("CV:PERSISTENCE", persistence);

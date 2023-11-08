@@ -24,51 +24,55 @@ void ofApp::drawGui(){
     // -------- MENU PRINCIPAL --------
     if (ImGui::BeginMainMenuBar())
     {
-        if (ImGui::BeginMenu("|Modo|"))
+        if (ImGui::BeginMenu("|Método de captura|"))
         {
-            ImGui::Text("Elegir el modo: "); ImGui::SameLine(); HelpMarker("elegirl la modo de captura");
+            ImGui::Text("Elegir el modo: "); ImGui::SameLine(); HelpMarker("elegirl la métodos de captura: por nivel de brillo o por substracción de fondo");
+            ImGui::NewLine();
             ImGui::RadioButton("brillo", &modo, 0);
             ImGui::RadioButton("fondo", &modo, 1);
             
             useBgSubtraction = (modo == 1) ? true : false;
-            
+            ImGui::NewLine();
             ImGui::Separator();
             
+            ImGui::NewLine();
             ImGui::SliderFloat("umbral", &threshold, 0.0f, 255.0f); ImGui::SameLine(); HelpMarker("Umbral de brillo para detectar blobs");
             contourFinder.setThreshold(threshold);
             
             ImGui::EndMenu();
         }
-        if (ImGui::BeginMenu("|Sustracción de fondo|"))
-        {
-            //ImGui::Checkbox("ventana flotante", &show_bg_config_panel);
-            //ImGui::Separator();
-            
-            ImGui::Text("Técnica: ");
-            ImGui::RadioButton("absolute", &bgSubTech, 0); ImGui::SameLine();
-            ImGui::RadioButton("lighter than", &bgSubTech, 1); ImGui::SameLine();
-            ImGui::RadioButton("darker than", &bgSubTech, 2); ImGui::SameLine(); HelpMarker("elegirl la técnica de substracción de fondo. Determina si toma la diferencia entre la imagen de entrada y el fondo, deja pasar formas claras o formas oscuras");
-            
-            ImGui::Separator();
-            ImGui::Checkbox("fondo adaptativo", &adaptive); ImGui::SameLine(); HelpMarker("fondo adaptativo. El fondo se actualiza según la velocidad de apatación. Si esto está desactivado el fondo es fijo");
-            ImGui::SliderFloat("veloidad de adaptación", &adaptSpeed, 0.001f, 0.1f); ImGui::SameLine(); HelpMarker("velocidad a la que se actualiza el fondo. Mayor velocidad se adapta a cambios más rápidos a los cambios del fondo, a costa de una pérdida de presencia de los objetos");
-            
-            ImGui::Separator();
-            ImGui::Text("Ajustes de imagen");
-            ImGui::SliderFloat("brillo", &brightness, -1.0f, 1.0f); ImGui::SameLine(); HelpMarker("brillo de la imagen");
-            ImGui::SliderFloat("contraste", &contrast, -1.0f, 1.0f); ImGui::SameLine(); HelpMarker("contraste de la imagen");
-            ImGui::SliderInt("blur", &blur, 0, 30); ImGui::SameLine(); HelpMarker("desenfoque de la imagen, utilizado para eliminar ruido");
-            ImGui::Checkbox("dilate", &dilate); ImGui::SameLine(); HelpMarker("dilata el límite y aumenta el tamaño del objeto en primer plano");
-            ImGui::Checkbox("erode", &erode); ImGui::SameLine(); HelpMarker("erosiona el límite y reduce el tamaño del objeto en primer plano");
-            
-            ImGui::Separator();
-            if (ImGui::Button("Capturar fondo")){
-                 bLearnBackground = true;
+        if(modo == 1){
+            if (ImGui::BeginMenu("|Sustracción|"))
+            {
+                //ImGui::Checkbox("ventana flotante", &show_bg_config_panel);
+                //ImGui::Separator();
+                
+                ImGui::Text("Técnica: ");
+                ImGui::RadioButton("absolute", &bgSubTech, 0); ImGui::SameLine();
+                ImGui::RadioButton("lighter than", &bgSubTech, 1); ImGui::SameLine();
+                ImGui::RadioButton("darker than", &bgSubTech, 2); ImGui::SameLine(); HelpMarker("elegirl la técnica de substracción de fondo. Determina si toma la diferencia entre la imagen de entrada y el fondo, deja pasar formas claras o formas oscuras");
+                
+                ImGui::Separator();
+                ImGui::Checkbox("fondo adaptativo", &adaptive); ImGui::SameLine(); HelpMarker("fondo adaptativo. El fondo se actualiza según la velocidad de apatación. Si esto está desactivado el fondo es fijo");
+                ImGui::SliderFloat("veloidad de adaptación", &adaptSpeed, 0.001f, 0.1f); ImGui::SameLine(); HelpMarker("velocidad a la que se actualiza el fondo. Mayor velocidad se adapta a cambios más rápidos a los cambios del fondo, a costa de una pérdida de presencia de los objetos");
+                
+                ImGui::Separator();
+                ImGui::Text("Ajustes de imagen");
+                ImGui::SliderFloat("brillo", &brightness, -1.0f, 1.0f); ImGui::SameLine(); HelpMarker("brillo de la imagen");
+                ImGui::SliderFloat("contraste", &contrast, -1.0f, 1.0f); ImGui::SameLine(); HelpMarker("contraste de la imagen");
+                ImGui::SliderInt("blur", &blur, 0, 30); ImGui::SameLine(); HelpMarker("desenfoque de la imagen, utilizado para eliminar ruido");
+                ImGui::Checkbox("dilate", &dilate); ImGui::SameLine(); HelpMarker("dilata el límite y aumenta el tamaño del objeto en primer plano");
+                ImGui::Checkbox("erode", &erode); ImGui::SameLine(); HelpMarker("erosiona el límite y reduce el tamaño del objeto en primer plano");
+                
+                ImGui::Separator();
+                if (ImGui::Button("Capturar fondo")){
+                     bLearnBackground = true;
+                }
+                ImGui::EndMenu();
             }
-            ImGui::EndMenu();
         }
         
-        if (ImGui::BeginMenu("|Blob Detection|"))
+        if (ImGui::BeginMenu("|Blobs|"))
         {
             //ImGui::Checkbox("ventana flotante", &show_bd_config_panel);
             //ImGui::Separator();
@@ -171,8 +175,8 @@ void ofApp::drawGui(){
         {
             ImGui::RadioButton("original", &imageView, 0);
             ImGui::RadioButton("transformada", &imageView, 1);
-            ImGui::RadioButton("escala de grises", &imageView, 2);
-            ImGui::RadioButton("fondo", &imageView, 3);
+            if(modo == 1) ImGui::RadioButton("escala de grises", &imageView, 2);
+            if(modo == 1) ImGui::RadioButton("fondo", &imageView, 3);
             ImGui::RadioButton("bitonal", &imageView, 4);
             ImGui::RadioButton("todas", &imageView, 5); ImGui::SameLine(); HelpMarker("elegirl la imagen que se muestra");
             

@@ -20,9 +20,15 @@ public:
     void mousePressed(int x, int y, int button);
     void mouseReleased(int x, int y, int button);
     void mouseDragged(int x, int y, int button);
+    void exit();
 
     //----------------- VIEW -------------------
     int                     imageView;
+    float                   w;
+    float                   h;
+    
+    float                   offset_x;
+    float                   offset_y;
 	
     //----------------- CAM -------------------
     ofVideoGrabber          cam;

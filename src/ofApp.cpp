@@ -66,8 +66,8 @@ void ofApp::setup() {
 void ofApp::update() {
 	cam.update();
     
-    float w = ofGetWidth();
-    float h = ofGetHeight();
+    w = ofGetWidth();
+    h = ofGetHeight();
     
 	if(cam.isFrameNew()) {
                 
@@ -154,11 +154,11 @@ void ofApp::draw() {
     
     ofSetColor(255);
     
-    float w = ofGetWidth();
-    float h = ofGetHeight();
+    w = ofGetWidth();
+    h = ofGetHeight();
     
-    float offset_x = 0;
-    float offset_y = 0;
+    offset_x = 0;
+    offset_y = 0;
     
     if(imageView == 0){
         mirroredImg.draw(0, 0, w, h); // imagen original de la cámara
@@ -180,11 +180,10 @@ void ofApp::draw() {
         h = ofGetHeight() / 2;
         offset_x = w;
         offset_y = h;
-        
         mirroredImg.draw(0, 0, w, h);
         warpedImg.draw(w, 0, w, h);
-        grayBg.draw(0, h, w, h);
-        bitonal.draw(w, h, w, h);
+        if(modo == 1)grayBg.draw(0, h, w, h);
+        if(modo == 1)bitonal.draw(w, h, w, h);
     }
     
     if(warpON){
@@ -350,14 +349,19 @@ void ofApp::mousePressed(int x, int y, int button) {
 //--------------------------------------------------------------
 void ofApp::mouseDragged(int x, int y, int button) {
     if(moverPunto){
-        if(x >= 0 && x<= ofGetWidth() && y>=0 && y <=ofGetHeight()){
-            warp[cualPunto].x = ofMap(x, 0, ofGetWidth(), 0, camWidth);
-            warp[cualPunto].y = ofMap(y, 0, ofGetHeight(), 0, camHeight);
+        if(x >= 0 && x<= w && y>=0 && y <=h){
+            warp[cualPunto].x = ofMap(x, 0, w, 0, camWidth);
+            warp[cualPunto].y = ofMap(y, 0, h, 0, camHeight);
         }
     }
 }
 //--------------------------------------------------------------
 void ofApp::mouseReleased(int x, int y, int button) {
     moverPunto = false;
+}
+
+//--------------------------------------------------------------
+void ofApp::exit() {
+    saveSettings();
 }
 
