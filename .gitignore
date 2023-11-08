@@ -1,0 +1,10 @@
+.DS_Store
+*.swp
+*~.nib
+
+bin/BBlobTracker-simple.app
+xcuserdata
+
+*.pbxuser
+*.perspective
+*.perspectivev3
